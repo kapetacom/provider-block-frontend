@@ -1,0 +1,35 @@
+kind: core.blockware.com/v1/BlockType
+metadata:
+  id: blocks.blockware.com/v1/Frontend
+  name: Frontend
+
+spec:
+
+  schema:
+    type: object
+    properties:
+      target:
+        $ref: core.blockware.com/v1/LanguageTarget
+      entities:
+        $ref: core.blockware.com/v1/EntityList
+      consumers:
+        $ref: core.blockware.com/v1/ResourceList
+      frontends:
+        type: array
+        minimum: 1
+        items:
+          type: object
+          properties:
+            path:
+              type: string
+            type:
+              type: string
+              enum:
+                - iframe
+                - module
+          required:
+            - path
+            - type
+    required:
+      - target
+      - frontends
