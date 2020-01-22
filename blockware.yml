@@ -14,22 +14,8 @@ spec:
         $ref: core.blockware.com/v1/EntityList
       consumers:
         $ref: core.blockware.com/v1/ResourceList
-      frontends:
-        type: array
-        minimum: 1
-        items:
-          type: object
-          properties:
-            path:
-              type: string
-            type:
-              type: string
-              enum:
-                - iframe
-                - module
-          required:
-            - path
-            - type
+      providers:
+        $ref: core.blockware.com/v1/ResourceList
     required:
       - target
-      - frontends
+
