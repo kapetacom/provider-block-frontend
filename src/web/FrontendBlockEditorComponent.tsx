@@ -19,7 +19,6 @@ import {
 } from "@blockware/ui-web-utils";
 
 import {
-    FormRow,
     TabContainer,
     TabPage,
     SidePanel,
@@ -28,7 +27,9 @@ import {
     EntityForm,
     EntityFormModel,
     FormButtons,
-    FormContainer
+    FormContainer,
+    SingleLineInput,
+    DropdownInput
 } from "@blockware/ui-web-components";
 
 import {
@@ -71,6 +72,10 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
             },type:BlockType.SERVICE
         };
     }
+
+    private blockTargetKinds() {
+        return BlockTargetProvider.list(this.props.kind);
+    }
     
     private stateChanged() {
         this.props.onDataChanged(toJS(this.metadata), toJS(this.spec));
@@ -84,19 +89,26 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     }
 
     @action
-    private handleMetaDataChanged(evt:ChangeEvent<HTMLInputElement>) {
-        this.metadata[evt.target.name] = evt.target.value.trim();
+    private handleMetaDataChanged(name: string,input: string) {
+        this.metadata[name] = input.trim();
 
         this.stateChanged();
     }
 
     @action
-    private handleTargetKindChanged(kind:string) {
-        if (this.spec.target.kind === kind) {
+    createDropdownOptions() {
+        let options =new Map();
+        this.blockTargetKinds().forEach((targetConfig) => options.set(targetConfig.name, targetConfig.kind ));
+        return options;
+    }
+
+    @action
+    private handleTargetKindChanged(kind:string[]) {
+        if (this.spec.target.kind === kind[0]) {
             return;
         }
 
-        this.spec.target.kind = kind;
+        this.spec.target.kind = kind[0];
         this.spec.target.options = {};
 
         this.stateChanged();
@@ -207,38 +219,35 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     private renderForm() {
         return (
             <>
-                <FormRow label="Name"
-                         help="Specifiy the name of your block."
-                         validation={'required'}>
-                    <input type="text" placeholder="E.g. My Block Name"
-                           name="name"
-                           autoComplete={"off"}
-                           value={this.metadata.name}
-                           onChange={(evt) => {this.handleMetaDataChanged(evt)}} />
-                </FormRow>
+                <SingleLineInput 
+                    name={"name"}
+                    value={this.metadata.name}
+                    label={"Name"}
+                    validation={['required']}
+                    help={"Specifiy the name of your block. E.g. My Block Name"}
+                    onChange={(name,input)=>this.handleMetaDataChanged(name,input)}
+                />
+                
+                <SingleLineInput 
+                    name={"version"}
+                    value={this.metadata.version}
+                    label={"Version"}
+                    validation={['required']}
+                    help={"The version is automatically calculated for you using semantic versioning."}
+                    onChange={(name,input)=>this.handleMetaDataChanged(name,input)}
+                    disabled={true}
+                />
 
-                <FormRow label={"Version"}
-                         help="The version is automatically calculated for you using semantic versioning."
-                         validation={'required'}>
-                    <input type="text" disabled
-                           name="version"
-                           value={this.metadata.version}
-                           onChange={(evt) => {this.handleMetaDataChanged(evt)}} />
-                </FormRow>
+                <DropdownInput
+                    name={"targetKind"}
+                    value={this.spec.target.kind.toLowerCase()}
+                    label={"Target"}
+                    validation={['required']}
+                    help={"This tells the code generation process which target programming language to use."}
+                    onChange={(name, input) => {this.handleTargetKindChanged(input)}}
+                    options={this.createDropdownOptions()}
+                />
 
-                <FormRow label={"Target"}
-                         help="This tells the code generation process which target programming language to use."
-                         validation={'required'}>
-                    <select name="targetKind"
-                            value={this.spec.target.kind.toLowerCase()}
-                            onChange={(evt) => {this.handleTargetKindChanged(evt.target.value)}}>
-
-                        <option value="">Select target...</option>
-                        {BlockTargetProvider.list(this.props.kind).map((targetConfig, ix) => {
-                            return <option key={ix} value={targetConfig.kind.toLowerCase()}>{targetConfig.name}</option>
-                        })}
-                    </select>
-                </FormRow>
 
                 {this.renderTargetConfig()}
             </>
