@@ -55,6 +55,9 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
     sidePanel: SidePanel | null = null;
 
+    @observable
+    blockTargetKind: string= this.blockTargetKinds()[0].kind.toLowerCase();
+
     constructor(props:EntityConfigProps){
         super(props);
 
@@ -98,17 +101,17 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     @action
     createDropdownOptions() {
         let options : { [key: string]: string } = {};
-        this.blockTargetKinds().forEach((targetConfig) => options[targetConfig.kind]= targetConfig.name );
+        this.blockTargetKinds().forEach((targetConfig) => options[targetConfig.kind.toLowerCase()]= targetConfig.name );
         return options;
     }
 
     @action
-    private handleTargetKindChanged(kind:string) {
-        if (this.spec.target.kind === kind) {
+    private handleTargetKindChanged = (name:string,value:string) => {
+        if (this.spec.target.kind === value) {
             return;
         }
-
-        this.spec.target.kind = kind;
+        this.blockTargetKind = value;
+        this.spec.target.kind = value;
         this.spec.target.options = {};
 
         this.stateChanged();
@@ -240,11 +243,11 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
                 <DropdownInput
                     name={"targetKind"}
-                    value={this.blockTargetKinds()[0].name}
+                    value={this.blockTargetKind}
                     label={"Target"}
                     validation={['required']}
                     help={"This tells the code generation process which target programming language to use."}
-                    onChange={(name, input) => {this.handleTargetKindChanged(input)}}
+                    onChange={this.handleTargetKindChanged}
                     options={this.createDropdownOptions()}
                 />
 
