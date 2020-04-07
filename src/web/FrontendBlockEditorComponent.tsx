@@ -1,4 +1,4 @@
-import React, {ChangeEvent, Component} from "react";
+import React, {Component} from "react";
 import _ from "lodash";
 import {action, observable, toJS} from "mobx";
 import {observer} from "mobx-react";
