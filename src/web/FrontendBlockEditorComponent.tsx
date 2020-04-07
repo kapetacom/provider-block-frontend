@@ -55,9 +55,6 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
     sidePanel: SidePanel | null = null;
 
-    @observable
-    blockTargetKind: string= this.blockTargetKinds()[0].kind.toLowerCase();
-
     constructor(props:EntityConfigProps){
         super(props);
 
@@ -74,10 +71,6 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
                 
             },type:BlockType.SERVICE
         };
-    }
-
-    private blockTargetKinds() {
-        return BlockTargetProvider.list(this.props.kind);
     }
     
     private stateChanged() {
@@ -101,7 +94,7 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     @action
     createDropdownOptions() {
         let options : { [key: string]: string } = {};
-        this.blockTargetKinds().forEach((targetConfig) => options[targetConfig.kind.toLowerCase()]= targetConfig.name );
+        BlockTargetProvider.list(this.props.kind).forEach((targetConfig) => options[targetConfig.kind.toLowerCase()]= targetConfig.name );
         return options;
     }
 
@@ -110,7 +103,6 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
         if (this.spec.target.kind === value) {
             return;
         }
-        this.blockTargetKind = value;
         this.spec.target.kind = value;
         this.spec.target.options = {};
 
@@ -243,7 +235,7 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
                 <DropdownInput
                     name={"targetKind"}
-                    value={this.blockTargetKind}
+                    value={this.spec.target.kind.toLowerCase()}
                     label={"Target"}
                     validation={['required']}
                     help={"This tells the code generation process which target programming language to use."}
