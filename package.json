@@ -12,9 +12,10 @@
     },
     "license": "MIT",
     "scripts": {
-        "start": "nodemon -e js,jsx,less,ts,tsx,json --ignore dist/ --ignore web/ --ignore stories/ --ignore node_modules/ --exec 'npm run build'",
+        "start": "npm run watch",
         "prepublishOnly": "npm run build",
-        "build": "webpack"
+        "build": "webpack",
+        "watch": "webpack --watch"
     },
     "dependencies": {},
     "devDependencies": {
