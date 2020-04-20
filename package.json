@@ -12,8 +12,10 @@
     },
     "license": "MIT",
     "scripts": {
+        "start": "npm run watch",
         "prepublishOnly": "npm run build",
-        "build": "webpack"
+        "build": "webpack",
+        "watch": "webpack --watch"
     },
     "dependencies": {},
     "devDependencies": {
@@ -24,7 +26,10 @@
         "@babel/preset-env": "^7.5.0",
         "@babel/preset-react": "^7.7.4",
         "@babel/preset-typescript": "^7.3.3",
-        "@blockware/ui-web-components": "0.0.7",
+        "@blockware/ui-web-components": "^0.0.22",
+        "@blockware/ui-web-context": "^0.0.16",
+        "@blockware/ui-web-types": "^0.0.20",
+        "@blockware/ui-web-utils": "^0.0.10",
         "@types/lodash": "^4.14.149",
         "@types/react": "^16.9.17",
         "babel-loader": "^8.0.6",
@@ -32,6 +37,8 @@
         "json-loader": "^0.5.7",
         "less": "^3.10.3",
         "less-loader": "^5.0.0",
+        "mobx": "^5.15.4",
+        "mobx-react": "^6.1.8",
         "style-loader": "^1.1.2",
         "webpack": "^4.41.5",
         "webpack-cli": "^3.3.10",
