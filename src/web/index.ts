@@ -1,13 +1,13 @@
 import { BlockConfig } from "@blockware/ui-web-types";
-import ServiceBlockEditorComponent from './FrontendBlockEditorComponent';
-import ServiceBlockValidation from './FrontendBlockValidation';
+import FrontendBlockEditorComponent from './FrontendBlockEditorComponent';
+import FrontendBlockValidation from './FrontendBlockValidation';
 const blockDefinition = require('../../blockware.yml');
 
 const blockType:BlockConfig = {
     kind: blockDefinition.metadata.id,
     name: blockDefinition.metadata.name,
-    validate: ServiceBlockValidation,
-    componentType: ServiceBlockEditorComponent
+    validate: FrontendBlockValidation,
+    componentType: FrontendBlockEditorComponent
 };
 
 export default blockType;

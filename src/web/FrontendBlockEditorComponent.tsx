@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import _ from "lodash";
-import {action, observable, toJS} from "mobx";
+import {action, makeObservable, observable, toJS} from "mobx";
 import {observer} from "mobx-react";
 
 import {
@@ -29,7 +29,11 @@ import {
     FormButtons,
     FormContainer,
     SingleLineInput,
-    DropdownInput
+    DropdownInput,
+    Button,
+    ButtonType,
+    ButtonStyle,
+    EntityList
 } from "@blockware/ui-web-components";
 
 import {
@@ -57,6 +61,7 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
     constructor(props:EntityConfigProps){
         super(props);
+        makeObservable(this);
 
         this.metadata = !_.isEmpty(this.props.metadata) ? _.cloneDeep(this.props.metadata) : {
             name: '',
@@ -117,22 +122,22 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     };
 
     @action
-    private handleEditEntity(entity:SchemaEntity) {
+    private handleEditEntity = (entity: SchemaEntity) => {
         if (!this.sidePanel) {
             return;
         }
 
-        this.currentEntity = new EntityFormModel(entity);
+        this.currentEntity = makeObservable(new EntityFormModel(entity));
         this.originalEntity = entity;
         this.sidePanel.open();
     }
 
     @action
-    private handleCreateEntity() {
+    private handleCreateEntity = () => {
         if (!this.sidePanel) {
             return;
         }
-        this.currentEntity = new EntityFormModel();
+        this.currentEntity = makeObservable(new EntityFormModel());
         this.originalEntity = this.currentEntity.getData();
         this.sidePanel.open();
     }
@@ -160,6 +165,11 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
     @action
     private handleEntitySaved = () => {
+        //this.spec.entities is set to an empty array in case it`s undefined, otherwise the function will exit in the next Return.
+        if (!this.spec.entities) {
+            this.spec.entities = [];
+        }
+
         if (!this.currentEntity ||
             !this.originalEntity ||
             !this.spec.entities) {
@@ -252,53 +262,8 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     private renderEntities() {
         const entities = this.spec.entities || [];
         return (
-            <div className={'entities-list'}>
-                <ul>
-                {
-                    entities.map((entity,ix) => {
-
-                        const inUse = hasEntityReference(this.spec, entity.name);
-
-                        const className = toClass({
-                            'entity': true,
-                            'used':inUse
-                        });
-                        return (
-                            <li key={ix} className={className}>
-                                <span className={'name'}>{entity.name}</span>
-
-                                {inUse &&
-                                    <span className={'note'}>( In use )</span>
-                                }
-
-                                <span className={'actions'}>
-                                    <button type={'button'}
-                                            onClick={() => this.handleEditEntity(entity)}
-                                            className={'edit'} >
-                                        <i className={'fa fa-pencil'} />
-                                    </button>
-
-                                    {!inUse &&
-                                        <button type={'button'}
-                                                onClick={() => this.handleRemoveEntity(entity)}
-                                                className={'remove'}>
-                                            <i className={'fa fa-times'} />
-                                        </button>
-                                    }
-                                </span>
-                            </li>
-                        );
-                    })
-                }
-                </ul>
-                <button type={'button'}
-                        onClick={() => this.handleCreateEntity()}
-                        className={'create'} >
-                    <i className={'fa fa-plus'} />
-                    <span>Create new entity</span>
-                </button>
-            </div>
-
+            <EntityList entities={entities} handleCreateEntity={this.handleCreateEntity}
+                        handleEditEntity={this.handleEditEntity} handleRemoveEntity={this.handleRemoveEntity}/>
         )
     }
 
@@ -324,22 +289,20 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
                            side={PanelAlignment.right}
                            onClose={this.handleEntityFormClosed}
                            title={'Edit entity'}>
-                    <FormContainer onSubmit={this.handleEntitySaved}>
-                        {this.currentEntity &&
+                    {this.currentEntity &&
+                        <FormContainer onSubmit={this.handleEntitySaved}>
+
                             <EntityForm name={'block-entity'}
                                         entity={this.currentEntity}
-                                        onChange={this.handleEntityUpdated}/>
-                        }
+                                        onChange={this.handleEntityUpdated} />
 
-                        <FormButtons>
-                            <button type={'button'} className={'cancel'} onClick={() => {this.sidePanel && this.sidePanel.close()}}>
-                                Cancel
-                            </button>
-                            <button type={'submit'} className={'action primary'}>
-                                Save
-                            </button>
-                        </FormButtons>
-                    </FormContainer>
+                            <FormButtons>
+                                <Button width={70} type={ButtonType.BUTTON} style={ButtonStyle.DANGER}
+                                        onClick={() => this.sidePanel && this.sidePanel.close()} text="Cancel"/>
+                                <Button width={70} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} text="Save"/>
+                            </FormButtons>
+                        </FormContainer>
+                    }
                 </SidePanel>
             </div>
         )
