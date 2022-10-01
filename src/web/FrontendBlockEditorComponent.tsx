@@ -163,9 +163,11 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
     private renderEntities() {
 
+        const entities = this.spec.entities;
+
         const result = {
-            code: this.spec.entities?.source.value || '',
-            entities: this.spec.entities?.types.map(DSLConverters.fromSchemaEntity)
+            code: entities?.source?.value || '',
+            entities: entities?.types?.map ? entities?.types?.map(DSLConverters.fromSchemaEntity) : []
         };
 
         return (
