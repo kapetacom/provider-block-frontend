@@ -3,32 +3,28 @@ import _ from "lodash";
 import {action, makeObservable, observable, toJS} from "mobx";
 import {observer} from "mobx-react";
 
-import {
+import type {
     Type,
     BlockMetadata,
     BlockServiceSpec,
-    BlockType,
     TargetConfigProps,
-    EntityConfigProps,
-    SchemaProperties, SchemaEntryType,
+    EntityConfigProps
+} from "@blockware/ui-web-types";
+
+import {
+    BlockType
 } from "@blockware/ui-web-types";
 
 
 import {
     TabContainer,
     TabPage,
-    SidePanel,
-    PanelAlignment,
-    PanelSize,
-    EntityForm,
-    FormButtons,
-    FormContainer,
     SingleLineInput,
     DropdownInput,
-    Button,
-    ButtonType,
-    ButtonStyle,
-    DSLDataTypeProperty, DSLDataType, DSLEntityType, DataTypeEditor
+    DSLDataType,
+    DataTypeEditor,
+    DSLConverters,
+    DSL_LANGUAGE_ID
 } from "@blockware/ui-web-components";
 
 import {
@@ -38,75 +34,6 @@ import {
 import './FrontendBlockEditorComponent.less';
 
 
-function fromSchemaType(type:any):string {
-    if (!type) {
-        return 'void'
-    }
-    return type && type.$ref ? type.$ref : type;
-}
-
-function toSchemaType(type:string):SchemaEntryType {
-    if (!type) {
-        return ''
-    }
-
-    if (type[0].toUpperCase() === type[0]) {
-        return {$ref: type};
-    }
-
-    return type;
-}
-
-
-function fromSchema(properties:SchemaProperties):DSLDataTypeProperty[] {
-    return Object.entries(properties).map(([name, value]):DSLDataTypeProperty => {
-        // @ts-ignore
-        const stringType = fromSchemaType(value.type);
-
-        if (stringType === 'array') {
-            return {
-                name,
-                type: fromSchemaType(value.items?.type),
-                list: true,
-                properties: value.items?.properties ? fromSchema(value.items?.properties) : undefined
-            }
-        }
-
-        return {
-            name,
-            type: stringType,
-            list: stringType.endsWith('[]'),
-            properties: value.properties ? fromSchema(value.properties) : undefined
-        }
-    });
-}
-
-function toSchema(properties:DSLDataTypeProperty[]):SchemaProperties {
-    const out = {};
-
-    properties.forEach(property => {
-
-        const type = toSchemaType(property.type);
-
-        if (property.list) {
-            out[property.name] = {
-                type: 'array',
-                items: {
-                    type,
-                    properties: property.properties ? toSchema(property.properties) : null
-                }
-            }
-        } else {
-            out[property.name] = {
-                type,
-                properties: property.properties ? toSchema(property.properties) : null
-            }
-        }
-
-    })
-
-    return out;
-}
 
 @observer
 export default class FrontendBlockEditorComponent extends Component<EntityConfigProps<BlockMetadata, BlockServiceSpec>, any> {
@@ -235,41 +162,32 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     }
 
     private renderEntities() {
-        const entities = this.spec.entities || [];
 
         const result = {
-            code: '',
-            entities: entities.map((entity):DSLDataType => {
-                return {
-                    type: DSLEntityType.DATATYPE,
-                    name: entity.name,
-                    properties: fromSchema(entity.properties)
-                }
-            })
+            code: this.spec.entities?.source.value || '',
+            entities: this.spec.entities?.types.map(DSLConverters.fromSchemaEntity)
         };
 
         return (
             <div className={'entity-editor'}>
                 <DataTypeEditor value={result} onChange={(result) => {
-                    result.entities && this.setEntities(result.entities);
+                    result.entities && this.setEntities(result.code, result.entities as DSLDataType[]);
                 }} />
             </div>
         )
     }
 
     @action
-    private setEntities(results: DSLDataType[]) {
-        const newEntities = results.map((entity:DSLDataType) => {
-            return {
-                name: entity.name,
-                properties: toSchema(entity.properties)
+    private setEntities(code:string, results: DSLDataType[]) {
+        const types = results.map(DSLConverters.toSchemaEntity);
+        this.spec.entities = {
+            types,
+            source: {
+                type: DSL_LANGUAGE_ID,
+                value: code
             }
-        });
-
-        if (!_.isEqual(this.spec.entities, newEntities)) {
-            this.spec.entities = newEntities
-            this.stateChanged();
-        }
+        };
+        this.stateChanged();
     }
 
     render() {
