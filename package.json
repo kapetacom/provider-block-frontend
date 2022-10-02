@@ -15,7 +15,9 @@
         "prepublishOnly": "npm run build",
         "build": "webpack",
         "start": "npm run watch",
-        "watch": "webpack --watch"
+        "watch": "webpack --watch",
+        "storybook": "start-storybook",
+        "build-storybook": "build-storybook"
     },
     "dependencies": {},
     "devDependencies": {
@@ -23,6 +25,12 @@
         "@blockware/ui-web-context": "<2",
         "@blockware/ui-web-types": "<2",
         "@blockware/ui-web-utils": "<2",
+        "@storybook/addon-actions": "^6.5.12",
+        "@storybook/addon-links": "^6.5.12",
+        "@storybook/addons": "^6.5.12",
+        "@storybook/builder-webpack5": "^6.5.12",
+        "@storybook/manager-webpack5": "^6.5.12",
+        "@storybook/react": "^6.5.12",
         "@babel/cli": "^7.18.10",
         "@babel/core": "^7.19.1",
         "@babel/plugin-proposal-class-properties": "^7.18.6",
