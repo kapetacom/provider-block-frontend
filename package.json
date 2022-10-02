@@ -1,6 +1,6 @@
 {
     "name": "@blockware/provider-block-frontend",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "main": "index.js",
     "description": "Provides block type for frontend microservices",
     "keywords": [
