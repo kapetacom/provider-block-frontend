@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {BlockMetadata, BlockServiceSpec, BlockType, SchemaKind, TargetConfig} from '@blockware/ui-web-types';
+import {
+    BlockMetadata,
+    BlockServiceSpec,
+    BlockType,
+    SchemaEntityType,
+    SchemaKind,
+    TargetConfig
+} from '@blockware/ui-web-types';
 import {BlockTargetProvider} from '@blockware/ui-web-context';
 import FrontendBlockEditorComponent from '../src/web/FrontendBlockEditorComponent';
 
@@ -33,6 +40,7 @@ const ServiceBlock: SchemaKind<BlockServiceSpec, BlockMetadata> = {
             },
             types: [
                 {
+                    type: SchemaEntityType.DTO,
                     name: 'MyEntity',
                     properties: {
                         'id': {
@@ -70,18 +78,24 @@ export default {
 
 export const CreateEditor = () => {
 
-    const [definition, setDefinition] = useState({kind:BLOCK_KIND,metadata:{name:'', version:''},spec:{type:BlockType.SERVICE,target:{kind:''}}});
+    const [definition, setDefinition] = useState({
+        kind: BLOCK_KIND,
+        metadata: {name: '', version: ''},
+        spec: {type: BlockType.SERVICE, target: {kind: ''}}
+    });
 
     return (
         <FrontendBlockEditorComponent {...definition}
-                                     creating={true}
-                                     onDataChanged={((metadata, spec) => {
-                                         setDefinition({
-                                             kind: ServiceBlock.kind,
-                                             metadata,
-                                             spec
-                                         })
-                                     })}/>
+                                      creating={true}
+                                      onDataChanged={((metadata, spec) => {
+                                          setDefinition({
+                                              kind: ServiceBlock.kind,
+                                              metadata,
+                                              spec
+                                          })
+
+                                          console.log('Data changed', metadata, spec);
+                                      })}/>
     )
 };
 
@@ -91,13 +105,15 @@ export const EditEditor = () => {
 
     return (
         <FrontendBlockEditorComponent {...definition}
-                                     creating={false}
-                                     onDataChanged={((metadata, spec) => {
-            setDefinition({
-                kind: ServiceBlock.kind,
-                metadata,
-                spec
-            })
-        })}/>
+                                      creating={false}
+                                      onDataChanged={((metadata, spec) => {
+                                          setDefinition({
+                                              kind: ServiceBlock.kind,
+                                              metadata,
+                                              spec
+                                          });
+                                          
+                                          console.log('Data changed', metadata, spec);
+                                      })}/>
     )
 };

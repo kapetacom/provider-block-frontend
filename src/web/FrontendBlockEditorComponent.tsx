@@ -21,10 +21,9 @@ import {
     TabPage,
     SingleLineInput,
     DropdownInput,
-    DSLDataType,
     DataTypeEditor,
     DSLConverters,
-    DSL_LANGUAGE_ID
+    DSL_LANGUAGE_ID, DSLEntity
 } from "@blockware/ui-web-components";
 
 import {
@@ -173,14 +172,14 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
         return (
             <div className={'entity-editor'}>
                 <DataTypeEditor value={result} onChange={(result) => {
-                    result.entities && this.setEntities(result.code, result.entities as DSLDataType[]);
+                    result.entities && this.setEntities(result.code, result.entities);
                 }} />
             </div>
         )
     }
 
     @action
-    private setEntities(code:string, results: DSLDataType[]) {
+    private setEntities(code:string, results: DSLEntity[]) {
         const types = results.map(DSLConverters.toSchemaEntity);
         this.spec.entities = {
             types,
