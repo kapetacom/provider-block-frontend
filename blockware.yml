@@ -4,7 +4,6 @@ metadata:
   name: Frontend
 
 spec:
-
   schema:
     type: object
     properties:
