@@ -1,20 +1,20 @@
-kind: core.blockware.com/v1/BlockType
+kind: core/block-type
 metadata:
-  id: blocks.blockware.com/v1/Frontend
-  name: Frontend
+  name: blockware/block-type-frontend
+  title: Frontend
 
 spec:
   schema:
     type: object
     properties:
       target:
-        $ref: core.blockware.com/v1/LanguageTarget
+        $ref: core/language-target
       entities:
-        $ref: core.blockware.com/v1/EntityList
+        $ref: core/entity-list
       consumers:
-        $ref: core.blockware.com/v1/ResourceList
+        $ref: core/resource-list
       providers:
-        $ref: core.blockware.com/v1/ResourceList
+        $ref: core/resource-list
     required:
       - target
 

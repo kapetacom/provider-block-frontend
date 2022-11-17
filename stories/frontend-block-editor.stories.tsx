@@ -12,7 +12,7 @@ import FrontendBlockEditorComponent from '../src/web/FrontendBlockEditorComponen
 
 import '@blockware/ui-web-components/styles/index.less';
 
-const BLOCK_KIND = 'blocks.blockware.com/v1/Frontend';
+const BLOCK_KIND = 'blockware/block-type-frontend';
 
 const targetConfig: TargetConfig = {
     kind: 'my-language-target',

@@ -4,8 +4,8 @@ import FrontendBlockValidation from './FrontendBlockValidation';
 const blockDefinition = require('../../blockware.yml');
 
 const blockType:BlockConfig = {
-    kind: blockDefinition.metadata.id,
-    name: blockDefinition.metadata.name,
+    kind: blockDefinition.metadata.name,
+    name: blockDefinition.metadata.title,
     validate: FrontendBlockValidation,
     componentType: FrontendBlockEditorComponent
 };

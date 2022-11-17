@@ -126,22 +126,12 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
         return (
             <>
                 <SingleLineInput 
-                    name={"name"}
-                    value={this.metadata.name}
-                    label={"Name"}
+                    name={"title"}
+                    value={this.metadata.title}
+                    label={"Title"}
                     validation={['required']}
                     help={"Specifiy the name of your block. E.g. My Block Name"}
                     onChange={(name,input)=>this.handleMetaDataChanged(name,input)}
-                />
-                
-                <SingleLineInput 
-                    name={"version"}
-                    value={this.metadata.version}
-                    label={"Version"}
-                    validation={['required']}
-                    help={"The version is automatically calculated for you using semantic versioning."}
-                    onChange={(name,input)=>this.handleMetaDataChanged(name,input)}
-                    disabled={true}
                 />
 
                 <DropdownInput

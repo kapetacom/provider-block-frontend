@@ -3,7 +3,7 @@ const Path = require('path');
 module.exports = {
     mode: 'development',
     entry: {
-        'blocks.blockware.com/v1/Frontend': Path.resolve(__dirname, "./src/web")
+        'blockware/block-type-frontend': Path.resolve(__dirname, "./src/web")
     },
     output: {
         path: Path.join(process.cwd(), 'web'),
