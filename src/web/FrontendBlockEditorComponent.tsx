@@ -125,14 +125,6 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     private renderForm() {
         return (
             <>
-                <SingleLineInput 
-                    name={"title"}
-                    value={this.metadata.title}
-                    label={"Title"}
-                    validation={['required']}
-                    help={"Specifiy the name of your block. E.g. My Block Name"}
-                    onChange={(name,input)=>this.handleMetaDataChanged(name,input)}
-                />
 
                 <DropdownInput
                     name={"targetKind"}
