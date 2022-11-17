@@ -19,11 +19,9 @@ import {
 import {
     TabContainer,
     TabPage,
-    SingleLineInput,
-    DropdownInput,
     DataTypeEditor,
     DSLConverters,
-    DSL_LANGUAGE_ID, DSLEntity
+    DSL_LANGUAGE_ID, DSLEntity, FormSelect
 } from "@blockware/ui-web-components";
 
 import {
@@ -49,7 +47,7 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
         this.metadata = !_.isEmpty(this.props.metadata) ? _.cloneDeep(this.props.metadata) : {
             name: '',
-            version: '0.0.1'
+            title: ''
         };
 
 
@@ -83,7 +81,7 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     @action
     createDropdownOptions() {
         let options : { [key: string]: string } = {};
-        BlockTargetProvider.list(this.props.kind).forEach((targetConfig) => options[targetConfig.kind.toLowerCase()]= targetConfig.name );
+        BlockTargetProvider.list(this.props.kind).forEach((targetConfig) => options[targetConfig.kind.toLowerCase()]= targetConfig.title || targetConfig.kind );
         return options;
     }
 
@@ -126,7 +124,7 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
         return (
             <>
 
-                <DropdownInput
+                <FormSelect
                     name={"targetKind"}
                     value={this.spec.target.kind.toLowerCase()}
                     label={"Target"}
