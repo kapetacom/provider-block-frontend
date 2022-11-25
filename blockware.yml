@@ -8,7 +8,7 @@ spec:
     type: object
     properties:
       target:
-        $ref: core/language-target
+        $ref: core/language-target-reference
       entities:
         $ref: core/entity-list
       consumers:
