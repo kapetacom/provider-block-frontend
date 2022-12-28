@@ -1,7 +1,6 @@
 {
-    "name": "@blockware/provider-block-frontend",
-    "version": "0.0.21",
-    "main": "index.js",
+    "name": "@blockware/block-type-frontend",
+    "version": "local",
     "description": "Provides block type for frontend microservices",
     "keywords": [
         "blockware"
@@ -13,11 +12,10 @@
     "license": "MIT",
     "scripts": {
         "prepublishOnly": "npm run build",
-        "build": "webpack",
+        "build": "webpack --mode production",
         "start": "npm run watch",
-        "watch": "webpack --watch",
-        "storybook": "start-storybook",
-        "build-storybook": "build-storybook"
+        "watch": "webpack --mode development --watch",
+        "storybook": "start-storybook"
     },
     "peerDependencies": {
         "@blockware/ui-web-components": "<2",
