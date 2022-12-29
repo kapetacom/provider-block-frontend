@@ -9,7 +9,7 @@ import type {
     BlockServiceSpec,
     TargetConfigProps,
     EntityConfigProps,
-    TargetConfig, TargetConfig
+    TargetConfig
 } from "@blockware/ui-web-types";
 
 import {
