@@ -8,7 +8,8 @@ import type {
     BlockMetadata,
     BlockServiceSpec,
     TargetConfigProps,
-    EntityConfigProps
+    EntityConfigProps,
+    TargetConfig, TargetConfig
 } from "@blockware/ui-web-types";
 
 import {
@@ -41,6 +42,8 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
     @observable
     private readonly spec:BlockServiceSpec;
 
+    private readonly originalTargetKind:string
+
     constructor(props:EntityConfigProps){
         super(props);
         makeObservable(this);
@@ -58,6 +61,8 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
                 
             },type:BlockType.SERVICE
         };
+
+        this.originalTargetKind = this.spec.target.kind;
     }
     
     private stateChanged() {
@@ -80,8 +85,25 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
     @action
     createDropdownOptions() {
-        let options : { [key: string]: string } = {};
-        BlockTargetProvider.list(this.props.kind).forEach((targetConfig) => options[targetConfig.kind.toLowerCase()]= targetConfig.title || targetConfig.kind );
+        let options: { [key: string]: string } = {};
+        const addTarget = (targetConfig:TargetConfig) => {
+            const key = `${targetConfig.kind.toLowerCase()}:${targetConfig.version.toLowerCase()}`;
+            const title = targetConfig.title ?
+                `${targetConfig.title} [${targetConfig.kind.toLowerCase()}:${targetConfig.version}]` :
+                `${targetConfig.kind}:${targetConfig.version}`;
+            options[key] = title;
+        };
+        BlockTargetProvider.list(this.props.kind)
+            .forEach(addTarget);
+        if (this.originalTargetKind &&
+            !options[this.originalTargetKind]) {
+            //Always add the current target if not already added.
+            //This usually happens if block uses an older version
+            const currentTarget = BlockTargetProvider.get(this.originalTargetKind, this.props.kind);
+            if (currentTarget) {
+                addTarget(currentTarget);
+            }
+        }
         return options;
     }
 
@@ -126,7 +148,7 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
 
                 <FormSelect
                     name={"targetKind"}
-                    value={this.spec.target.kind.toLowerCase()}
+                    value={this.spec.target?.kind?.toLowerCase()}
                     label={"Target"}
                     validation={['required']}
                     help={"This tells the code generation process which target programming language to use."}
