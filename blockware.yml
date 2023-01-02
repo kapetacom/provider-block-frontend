@@ -15,13 +15,13 @@ spec:
     type: object
     properties:
       target:
-        $ref: core/language-target-reference
+        $ref: /core/language-target-reference
       entities:
-        $ref: core/entity-list
+        $ref: /core/entity-list
       consumers:
-        $ref: core/resource-list
+        $ref: /core/block-resource-list
       providers:
-        $ref: core/resource-list
+        $ref: /core/block-resource-list
     required:
       - target
 
