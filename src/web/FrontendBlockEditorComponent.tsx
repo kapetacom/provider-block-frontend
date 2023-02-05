@@ -13,11 +13,6 @@ import type {
 } from "@blockware/ui-web-types";
 
 import {
-    BlockType
-} from "@blockware/ui-web-types";
-
-
-import {
     TabContainer,
     TabPage,
     DataTypeEditor,
@@ -57,9 +52,8 @@ export default class FrontendBlockEditorComponent extends Component<EntityConfig
         this.spec = !_.isEmpty(this.props.spec) ? _.cloneDeep(this.props.spec) : {
             target: {
                 kind: '',
-                options: {},
-                
-            },type:BlockType.SERVICE
+                options: {}
+            }
         };
 
         this.originalTargetKind = this.spec.target.kind;

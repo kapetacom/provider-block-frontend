@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
     BlockMetadata,
     BlockServiceSpec,
-    BlockType,
     SchemaEntityType,
     SchemaKind,
     TargetConfig
@@ -16,7 +15,8 @@ const BLOCK_KIND = 'blockware/block-type-frontend';
 
 const targetConfig: TargetConfig = {
     kind: 'my-language-target',
-    name: 'My Language Target',
+    version: '1.0.0',
+    title: 'My Language Target',
     blockKinds: [
         BLOCK_KIND
     ]
@@ -25,11 +25,9 @@ const targetConfig: TargetConfig = {
 const ServiceBlock: SchemaKind<BlockServiceSpec, BlockMetadata> = {
     kind: BLOCK_KIND,
     metadata: {
-        name: 'My block',
-        version: '1.2.3'
+        name: 'My block'
     },
     spec: {
-        type: 'frontend' as BlockType,
         target: {
             kind: targetConfig.kind
         },
@@ -80,8 +78,8 @@ export const CreateEditor = () => {
 
     const [definition, setDefinition] = useState({
         kind: BLOCK_KIND,
-        metadata: {name: '', version: ''},
-        spec: {type: BlockType.SERVICE, target: {kind: ''}}
+        metadata: {name: ''},
+        spec: {target: {kind: ''}}
     });
 
     return (
