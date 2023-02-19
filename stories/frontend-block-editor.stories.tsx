@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+    BlockKind,
     BlockMetadata,
     BlockServiceSpec,
     SchemaEntityType,
@@ -7,14 +8,15 @@ import {
     TargetConfig
 } from '@blockware/ui-web-types';
 import {BlockTargetProvider} from '@blockware/ui-web-context';
-import FrontendBlockEditorComponent from '../src/web/FrontendBlockEditorComponent';
+import {FrontendBlockEditorComponent} from '../src/web/FrontendBlockEditorComponent';
 
 import '@blockware/ui-web-components/styles/index.less';
+import {FormContainer} from '@blockware/ui-web-components';
 
 const BLOCK_KIND = 'blockware/block-type-frontend';
 
 const targetConfig: TargetConfig = {
-    kind: 'my-language-target',
+    kind: 'blockware/my-language-target',
     version: '1.0.0',
     title: 'My Language Target',
     blockKinds: [
@@ -22,14 +24,14 @@ const targetConfig: TargetConfig = {
     ]
 };
 
-const ServiceBlock: SchemaKind<BlockServiceSpec, BlockMetadata> = {
+const blockData: SchemaKind<BlockServiceSpec, BlockMetadata> = {
     kind: BLOCK_KIND,
     metadata: {
         name: 'My block'
     },
     spec: {
         target: {
-            kind: targetConfig.kind
+            kind: targetConfig.kind + ':1.0.0'
         },
         entities: {
             source: {
@@ -83,35 +85,27 @@ export const CreateEditor = () => {
     });
 
     return (
-        <FrontendBlockEditorComponent {...definition}
-                                      creating={true}
-                                      onDataChanged={((metadata, spec) => {
-                                          setDefinition({
-                                              kind: ServiceBlock.kind,
-                                              metadata,
-                                              spec
-                                          })
-
-                                          console.log('Data changed', metadata, spec);
-                                      })}/>
+        <FormContainer initialValue={definition}
+                       onChange={(data) => {
+                           console.log('data changed', data);
+                           setDefinition(data as BlockKind);
+                       }}>
+            <FrontendBlockEditorComponent creating={true}/>
+        </FormContainer>
     )
 };
 
 export const EditEditor = () => {
 
-    const [definition, setDefinition] = useState(ServiceBlock);
+    const [definition, setDefinition] = useState(blockData);
 
     return (
-        <FrontendBlockEditorComponent {...definition}
-                                      creating={false}
-                                      onDataChanged={((metadata, spec) => {
-                                          setDefinition({
-                                              kind: ServiceBlock.kind,
-                                              metadata,
-                                              spec
-                                          });
-                                          
-                                          console.log('Data changed', metadata, spec);
-                                      })}/>
+        <FormContainer initialValue={definition}
+                       onChange={(data) => {
+                           console.log('data changed', data);
+                           setDefinition(data as BlockKind);
+                       }}>
+            <FrontendBlockEditorComponent creating={false}/>
+        </FormContainer>
     )
 };

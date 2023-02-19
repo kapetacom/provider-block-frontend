@@ -1,5 +1,5 @@
 import { BlockConfig } from "@blockware/ui-web-types";
-import FrontendBlockEditorComponent from './FrontendBlockEditorComponent';
+import {FrontendBlockEditorComponent} from './FrontendBlockEditorComponent';
 import FrontendBlockValidation from './FrontendBlockValidation';
 const blockDefinition = require('../../blockware.yml');
 const packageJson = require('../../package.json');
