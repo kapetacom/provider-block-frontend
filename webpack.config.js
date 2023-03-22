@@ -72,9 +72,9 @@ module.exports = {
         'react-dom': 'ReactDom',
         'mobx-react': 'MobXReact',
         'mobx': 'MobX',
-        '@blockware/ui-web-components': 'Blockware.Components',
-        '@blockware/ui-web-types': 'Blockware.Types',
-        '@blockware/ui-web-utils': 'Blockware.Utils',
-        '@blockware/ui-web-context': 'Blockware.Context'
+        '@kapeta/ui-web-components': 'Blockware.Components',
+        '@kapeta/ui-web-types': 'Blockware.Types',
+        '@kapeta/ui-web-utils': 'Blockware.Utils',
+        '@kapeta/ui-web-context': 'Blockware.Context'
     }
 };

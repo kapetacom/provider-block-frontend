@@ -1,5 +1,5 @@
 {
-    "name": "@blockware/block-type-frontend",
+    "name": "@kapeta/block-type-frontend",
     "version": "local",
     "description": "Provides block type for frontend microservices",
     "keywords": [
@@ -18,16 +18,16 @@
         "storybook": "start-storybook"
     },
     "peerDependencies": {
-        "@blockware/ui-web-components": "<2",
-        "@blockware/ui-web-context": "<2",
-        "@blockware/ui-web-types": "<2",
-        "@blockware/ui-web-utils": "<2"
+        "@kapeta/ui-web-components": "<2",
+        "@kapeta/ui-web-context": "<2",
+        "@kapeta/ui-web-types": "<2",
+        "@kapeta/ui-web-utils": "<2"
     },
     "devDependencies": {
-        "@blockware/ui-web-components": "<2",
-        "@blockware/ui-web-context": "<2",
-        "@blockware/ui-web-types": "<2",
-        "@blockware/ui-web-utils": "<2",
+        "@kapeta/ui-web-components": "<2",
+        "@kapeta/ui-web-context": "<2",
+        "@kapeta/ui-web-types": "<2",
+        "@kapeta/ui-web-utils": "<2",
         "@storybook/addon-actions": "^6.5.12",
         "@storybook/addon-links": "^6.5.12",
         "@storybook/addons": "^6.5.12",

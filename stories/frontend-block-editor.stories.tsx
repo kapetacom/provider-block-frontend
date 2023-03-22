@@ -6,17 +6,17 @@ import {
     SchemaEntityType,
     SchemaKind,
     TargetConfig
-} from '@blockware/ui-web-types';
-import {BlockTargetProvider} from '@blockware/ui-web-context';
+} from '@kapeta/ui-web-types';
+import {BlockTargetProvider} from '@kapeta/ui-web-context';
 import {FrontendBlockEditorComponent} from '../src/web/FrontendBlockEditorComponent';
 
-import '@blockware/ui-web-components/styles/index.less';
-import {FormContainer} from '@blockware/ui-web-components';
+import '@kapeta/ui-web-components/styles/index.less';
+import {FormContainer} from '@kapeta/ui-web-components';
 
-const BLOCK_KIND = 'blockware/block-type-frontend';
+const BLOCK_KIND = 'kapeta/block-type-frontend';
 
 const targetConfig: TargetConfig = {
-    kind: 'blockware/my-language-target',
+    kind: 'kapeta/my-language-target',
     version: '1.0.0',
     title: 'My Language Target',
     blockKinds: [
@@ -35,7 +35,7 @@ const blockData: SchemaKind<BlockServiceSpec, BlockMetadata> = {
         },
         entities: {
             source: {
-                type: 'blockware-dsl',
+                type: 'kapeta-dsl',
                 value: ''
             },
             types: [
