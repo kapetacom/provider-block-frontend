@@ -2,7 +2,7 @@ const Path = require('path');
 const FS = require('fs');
 const YAML = require('yaml');
 
-const blockInfo = YAML.parse(FS.readFileSync(Path.resolve(__dirname, './blockware.yml')).toString());
+const blockInfo = YAML.parse(FS.readFileSync(Path.resolve(__dirname, './kapeta.yml')).toString());
 const packageJson = require('./package.json');
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
         path: Path.join(process.cwd(), 'web'),
         filename: '[name].js',
         library: {
-            name: `Blockware.blockTypes["[name]"]`,
+            name: `Kapeta.blockTypes["[name]"]`,
             type: 'assign',
             export: 'default'
         }
@@ -72,9 +72,9 @@ module.exports = {
         'react-dom': 'ReactDom',
         'mobx-react': 'MobXReact',
         'mobx': 'MobX',
-        '@kapeta/ui-web-components': 'Blockware.Components',
-        '@kapeta/ui-web-types': 'Blockware.Types',
-        '@kapeta/ui-web-utils': 'Blockware.Utils',
-        '@kapeta/ui-web-context': 'Blockware.Context'
+        '@kapeta/ui-web-components': 'Kapeta.Components',
+        '@kapeta/ui-web-types': 'Kapeta.Types',
+        '@kapeta/ui-web-utils': 'Kapeta.Utils',
+        '@kapeta/ui-web-context': 'Kapeta.Context'
     }
 };

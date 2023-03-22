@@ -3,7 +3,7 @@
     "version": "local",
     "description": "Provides block type for frontend microservices",
     "keywords": [
-        "blockware"
+        "kapeta"
     ],
     "private": false,
     "publishConfig": {
