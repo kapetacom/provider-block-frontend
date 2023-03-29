@@ -1,7 +1,7 @@
 # Frontend Block Provider
-Provides frontend blocks to the blockware eco-system.
+Provides frontend blocks to the kapeta eco-system.
 
 ---
-For details about Blockware Providers see:
+For details about Kapeta Providers see:
 
-https://github.com/blockwarecom/provider-documentation
+https://github.com/kapetacom/provider-documentation
