@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "outDir": "build/lib",
+    "target": "esnext",
     "lib": [
       "dom",
       "dom.iterable",

@@ -1,30 +1,34 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
-    BlockKind,
-    BlockMetadata,
-    BlockServiceSpec,
-    SchemaEntityType,
     SchemaKind,
-    TargetConfig
+    ILanguageTargetProvider
 } from '@kapeta/ui-web-types';
+import {BlockDefinition, BlockServiceSpec, Metadata} from '@kapeta/schemas';
 import {BlockTargetProvider} from '@kapeta/ui-web-context';
 import {FrontendBlockEditorComponent} from '../src/web/FrontendBlockEditorComponent';
 
 import '@kapeta/ui-web-components/styles/index.less';
 import {FormContainer} from '@kapeta/ui-web-components';
+import {EntityType} from "@kapeta/schemas/dist/cjs";
+
 
 const BLOCK_KIND = 'kapeta/block-type-frontend';
 
-const targetConfig: TargetConfig = {
+const targetConfig: ILanguageTargetProvider = {
     kind: 'kapeta/my-language-target',
     version: '1.0.0',
     title: 'My Language Target',
     blockKinds: [
         BLOCK_KIND
-    ]
+    ],
+    definition: {
+        metadata: {
+            name: 'kapeta/test'
+        }
+    }
 };
 
-const blockData: SchemaKind<BlockServiceSpec, BlockMetadata> = {
+const blockData: SchemaKind<BlockServiceSpec, Metadata> = {
     kind: BLOCK_KIND,
     metadata: {
         name: 'My block'
@@ -40,7 +44,7 @@ const blockData: SchemaKind<BlockServiceSpec, BlockMetadata> = {
             },
             types: [
                 {
-                    type: SchemaEntityType.DTO,
+                    type: EntityType.Dto,
                     name: 'MyEntity',
                     properties: {
                         'id': {
@@ -76,19 +80,24 @@ export default {
     title: 'Frontend Block'
 };
 
+
 export const CreateEditor = () => {
 
-    const [definition, setDefinition] = useState({
-        kind: BLOCK_KIND,
-        metadata: {name: ''},
-        spec: {target: {kind: ''}}
-    });
+    const initial = useMemo(() => {
+        return {
+            kind: BLOCK_KIND,
+            metadata: {name: ''},
+            spec: {target: {kind: ''}}
+        };
+    }, [])
+
+    const [definition, setDefinition] = useState(initial);
 
     return (
-        <FormContainer initialValue={definition}
+        <FormContainer initialValue={initial}
                        onChange={(data) => {
                            console.log('data changed', data);
-                           setDefinition(data as BlockKind);
+                           setDefinition(data as BlockDefinition);
                        }}>
             <FrontendBlockEditorComponent creating={true}/>
         </FormContainer>
@@ -100,10 +109,10 @@ export const EditEditor = () => {
     const [definition, setDefinition] = useState(blockData);
 
     return (
-        <FormContainer initialValue={definition}
+        <FormContainer initialValue={blockData}
                        onChange={(data) => {
                            console.log('data changed', data);
-                           setDefinition(data as BlockKind);
+                           setDefinition(data as BlockDefinition);
                        }}>
             <FrontendBlockEditorComponent creating={false}/>
         </FormContainer>
