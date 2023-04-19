@@ -1,9 +1,8 @@
 import React, {useMemo, useState} from 'react';
 import {
-    SchemaKind,
     ILanguageTargetProvider
 } from '@kapeta/ui-web-types';
-import {BlockDefinition, BlockServiceSpec, Metadata} from '@kapeta/schemas';
+import {BlockDefinition} from '@kapeta/schemas';
 import {BlockTargetProvider} from '@kapeta/ui-web-context';
 import {FrontendBlockEditorComponent} from '../src/web/FrontendBlockEditorComponent';
 
@@ -16,26 +15,54 @@ const BLOCK_KIND = 'kapeta/block-type-frontend';
 
 const targetConfig: ILanguageTargetProvider = {
     kind: 'kapeta/my-language-target',
-    version: '1.0.0',
     title: 'My Language Target',
+    version: '1.0.0',
     blockKinds: [
         BLOCK_KIND
     ],
     definition: {
+        kind: 'my-language-target',
         metadata: {
             name: 'kapeta/test'
         }
     }
 };
 
-const blockData: SchemaKind<BlockServiceSpec, Metadata> = {
+const blockData: BlockDefinition = {
     kind: BLOCK_KIND,
     metadata: {
         name: 'My block'
     },
     spec: {
         target: {
-            kind: targetConfig.kind + ':1.0.0'
+            kind: targetConfig.kind + ':1.0.0',
+        },
+        configuration: {
+            source: {
+                type: 'kapeta-dsl',
+                value: ''
+            },
+            types: [
+                {
+                    name: 'CoreConfig',
+                    type: EntityType.Dto,
+                    properties: {
+                        apiKey: {
+                            type: 'string',
+                            secret: true
+                        },
+                        name: {
+                            type: 'string',
+                            required: true,
+                            defaultValue: '"My Block"'
+                        },
+                        enabled: {
+                            type: 'boolean',
+                            defaultValue: 'true'
+                        },
+                    }
+                }
+            ]
         },
         entities: {
             source: {
@@ -44,33 +71,22 @@ const blockData: SchemaKind<BlockServiceSpec, Metadata> = {
             },
             types: [
                 {
-                    type: EntityType.Dto,
                     name: 'MyEntity',
+                    type: EntityType.Dto,
                     properties: {
-                        'id': {
+                        id: {
                             type: 'string'
                         },
                         'tags': {
-                            type: 'array',
-                            items: {
-                                type: 'string'
-                            }
+                            type: 'string[]'
                         },
                         'children': {
-                            type: 'array',
-                            items: {
-                                type: 'object',
-                                properties: {
-                                    childId: {
-                                        type: 'integer'
-                                    }
-                                }
-                            }
+                            ref: 'MyEntity[]'
                         }
                     }
                 }
             ]
-        }
+        },
     }
 };
 
