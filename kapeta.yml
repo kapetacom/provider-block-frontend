@@ -4,6 +4,10 @@ metadata:
   title: Frontend
 
 spec:
+  icon:
+    type: url
+    value: https://storage.googleapis.com/kapeta-public-cdn/icons/frontend.svg
+
   dependencies:
     - path: spec.consumers.kind
       type: Consumers
@@ -14,6 +18,8 @@ spec:
   schema:
     type: object
     properties:
+      icon:
+        $ref: /core/icon-value
       target:
         $ref: /core/language-target-reference
       configuration:
