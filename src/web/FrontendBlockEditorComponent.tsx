@@ -12,7 +12,8 @@ import {
     FormFieldType,
     TabContainer,
     TabPage,
-    useFormContextField
+    useFormContextField,
+    FormAvatarEditorField
 } from "@kapeta/ui-web-components";
 
 import {BlockTargetProvider} from "@kapeta/ui-web-context";
@@ -159,6 +160,15 @@ export const FrontendBlockEditorComponent = (props:Props) => {
         <div className={'frontend-block-config'}>
             <TabContainer defaultTab={'general'}>
                 <TabPage id={'general'} title={'General'}>
+                    <p className='info'>Frontend block that describes a web-based UI such as React or Angular apps</p>
+                    <FormAvatarEditorField
+                        name={'spec.icon'}
+                        label={'Icon'}
+                        maxFileSize={1024 * 50}
+                        help={'Select an icon for this block to make it easier to identify. Max 50 kb - and we recommend using a square SVG image.'}
+                        fallbackIcon={'kap-icon-block'}
+                    />
+
                     <FormField
                         name={"spec.target.kind"}
                         type={FormFieldType.ENUM}
