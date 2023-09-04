@@ -8,7 +8,7 @@ import {FrontendBlockEditorComponent} from '../src/web/FrontendBlockEditorCompon
 
 import '@kapeta/ui-web-components/styles/index.less';
 import {FormContainer} from '@kapeta/ui-web-components';
-import {EntityType} from "@kapeta/schemas/dist/cjs";
+import {EntityType} from "@kapeta/schemas";
 
 
 const BLOCK_KIND = 'kapeta/block-type-frontend';
@@ -16,14 +16,31 @@ const BLOCK_KIND = 'kapeta/block-type-frontend';
 const targetConfig: ILanguageTargetProvider = {
     kind: 'kapeta/my-language-target',
     title: 'My Language Target',
-    version: '1.0.0',
+    version: '1.2.3',
     blockKinds: [
         BLOCK_KIND
     ],
     definition: {
-        kind: 'my-language-target',
+        kind: 'kapeta/language-target',
         metadata: {
-            name: 'kapeta/test'
+            name: 'kapeta/my-language-target',
+        }
+    }
+};
+
+
+const targetConfig2: ILanguageTargetProvider = {
+    kind: 'kapeta/my-other-target',
+    title: 'My Other Target',
+    version: '1.2.3',
+    blockKinds: [
+        BLOCK_KIND
+    ],
+    definition: {
+        kind: 'kapeta/language-target',
+        metadata: {
+            name: 'kapeta/my-other-target',
+            title: 'Other target'
         }
     }
 };
@@ -91,6 +108,7 @@ const blockData: BlockDefinition = {
 };
 
 BlockTargetProvider.register(targetConfig);
+BlockTargetProvider.register(targetConfig2);
 
 export default {
     title: 'Frontend Block'

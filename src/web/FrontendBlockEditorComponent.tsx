@@ -1,6 +1,7 @@
 import React, {ComponentType, useMemo} from "react";
 
 import type {ILanguageTargetProvider} from "@kapeta/ui-web-types";
+import { parseKapetaUri } from '@kapeta/nodejs-utils';
 
 import {
     DataTypeEditor,
@@ -8,12 +9,12 @@ import {
     DSL_LANGUAGE_ID,
     DSLConverters,
     DSLEntity,
-    FormField,
-    FormFieldType,
     TabContainer,
     TabPage,
     useFormContextField,
-    FormAvatarEditorField
+    FormAvatarEditorField,
+    AssetVersionSelector,
+    AssetVersionSelectorEntry,
 } from "@kapeta/ui-web-components";
 
 import {BlockTargetProvider} from "@kapeta/ui-web-context";
@@ -34,36 +35,37 @@ export const FrontendBlockEditorComponent = (props:Props) => {
     const targetKind = targetKindField.get();
     const kind = kindField.get();
 
-    const targetDropdownOptions = useMemo(() => {
-        const options: { [key: string]: string } = {};
-
-        let defaultTarget:string|null = null;
-
-        const addTarget = (targetConfig:ILanguageTargetProvider) => {
-            const key = `${targetConfig.kind.toLowerCase()}:${targetConfig.version.toLowerCase()}`;
-            if (!defaultTarget) {
-                defaultTarget = key;
-            }
+    const assetTypes:AssetVersionSelectorEntry[] = useMemo(() => {
+        const mapper = (targetConfig:ILanguageTargetProvider):AssetVersionSelectorEntry => {
+            const ref = `${targetConfig.kind}:${targetConfig.version}`;
             const title = targetConfig.title ?
                 `${targetConfig.title} [${targetConfig.kind.toLowerCase()}:${targetConfig.version}]` :
                 `${targetConfig.kind}:${targetConfig.version}`;
-            options[key] = title;
+
+            return {
+                ref: ref,
+                kind: targetConfig.definition?.kind ?? targetConfig.kind,
+                title,
+                icon: targetConfig.icon ?? targetConfig.definition?.spec?.icon
+            }
         };
 
-        BlockTargetProvider.listAll(kind).forEach(addTarget);
-        if (targetKind && !options[targetKind]) {
+        const targetUri = targetKind ? parseKapetaUri(targetKind) : null;
+        const out = BlockTargetProvider.listAll(kind).map(mapper);
+        if (targetUri &&
+            !out.some(e => parseKapetaUri(e.ref).equals(targetUri))) {
             //Always add the current target if not already added.
             //This usually happens if block uses an older version
             try {
                 const currentTarget = BlockTargetProvider.get(targetKind, kind);
                 if (currentTarget) {
-                    addTarget(currentTarget);
+                    out.push(mapper(currentTarget))
                 }
             } catch (e) {
                 console.warn('Failed to select target', e);
             }
         }
-        return options;
+        return out;
     }, [kind, targetKind]);
 
     const TargetConfigComponent: ComponentType | null = useMemo(() => {
@@ -169,13 +171,12 @@ export const FrontendBlockEditorComponent = (props:Props) => {
                         fallbackIcon={'kap-icon-block'}
                     />
 
-                    <FormField
+                    <AssetVersionSelector
                         name={"spec.target.kind"}
-                        type={FormFieldType.ENUM}
                         label={"Target"}
                         validation={['required']}
                         help={"This tells the code generation process which target programming language to use."}
-                        options={targetDropdownOptions}
+                        assetTypes={assetTypes}
                     />
 
                     {renderTargetConfig()}

@@ -33,6 +33,7 @@
     "@babel/preset-env": "^7.19.1",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
+    "@kapeta/nodejs-utils": "^0.0.10",
     "@kapeta/schemas": "<2",
     "@kapeta/ui-web-components": "<2",
     "@kapeta/ui-web-context": "<2",
@@ -62,5 +63,6 @@
   "files": [
     "web",
     "kapeta.yml"
-  ]
+  ],
+  "bundleDependencies": []
 }
