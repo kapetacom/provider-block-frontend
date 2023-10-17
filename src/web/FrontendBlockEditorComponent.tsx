@@ -21,6 +21,10 @@ import {BlockTargetProvider} from "@kapeta/ui-web-context";
 
 import './FrontendBlockEditorComponent.less';
 
+function filterEmpty<T>(value: T | null | undefined): boolean {
+    return value !== null && value !== undefined;
+}
+
 interface Props {
     creating?:boolean
 }
@@ -98,7 +102,7 @@ export const FrontendBlockEditorComponent = (props:Props) => {
         const configuration = configurationField.get();
         const result = {
             code: configuration?.source?.value || '',
-            entities: configuration?.types?.map ? configuration?.types?.map(DSLConverters.fromSchemaEntity) : []
+            entities: configuration?.types?.map ? configuration?.types?.filter(filterEmpty).map(DSLConverters.fromSchemaEntity) : []
         };
 
         return (
@@ -130,7 +134,7 @@ export const FrontendBlockEditorComponent = (props:Props) => {
 
         const result = {
             code: entities?.source?.value || '',
-            entities: entities?.types?.map ? entities?.types?.map(DSLConverters.fromSchemaEntity) : []
+            entities: entities?.types?.map ? entities?.types?.filter(filterEmpty).map(DSLConverters.fromSchemaEntity) : []
         };
 
         return (
