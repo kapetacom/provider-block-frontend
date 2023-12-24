@@ -68,6 +68,5 @@
   "files": [
     "web",
     "kapeta.yml"
-  ],
-  "bundleDependencies": []
+  ]
 }
