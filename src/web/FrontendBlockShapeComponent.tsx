@@ -16,7 +16,7 @@ import {
 import React from 'react';
 
 export const FrontendBlockShapeComponent = <TBlockType extends BlockDefinition>(
-    props: BlockTypeShapeProps<TBlockType>,
+    props: BlockTypeShapeProps<TBlockType>
 ) => {
     // Scaling the topbar svg to fit the block
     const block = useBlock();
@@ -37,6 +37,7 @@ export const FrontendBlockShapeComponent = <TBlockType extends BlockDefinition>(
                 rx="5.5"
                 fill="none"
                 stroke="black"
+                strokeWidth={1.5}
                 strokeOpacity="0.12"
             />
             {/* Topbar */}
