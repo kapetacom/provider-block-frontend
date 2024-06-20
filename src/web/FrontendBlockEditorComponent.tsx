@@ -88,7 +88,7 @@ export const FrontendBlockEditorComponent = (props: Props) => {
 
     return (
         <div>
-            <InfoBox>Frontend block that describes a web-based UI such as React or Angular apps</InfoBox>
+            <InfoBox sx={{ my: 1 }}>Frontend block that describes a web-based UI such as React or Angular apps</InfoBox>
             <FormAvatarEditorField
                 name={'spec.icon'}
                 label={'Icon'}
