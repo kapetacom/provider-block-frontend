@@ -16,7 +16,7 @@ import {
 import React from 'react';
 
 export const FrontendBlockShapeComponent = <TBlockType extends BlockDefinition>(
-    props: BlockTypeShapeProps<TBlockType>
+    props: BlockTypeShapeProps<TBlockType>,
 ) => {
     // Scaling the topbar svg to fit the block
     const block = useBlock();
@@ -26,7 +26,8 @@ export const FrontendBlockShapeComponent = <TBlockType extends BlockDefinition>(
     return (
         <g className="block-node" style={{ cursor: block.readOnly ? 'default' : 'move' }}>
             {/* Background */}
-            <rect width={props.width} height={props.height} rx="6" fill="white" />
+            <rect className="block-body" width={props.width} height={props.height} rx="6" fill="white" />
+
             {/* Border */}
             <rect
                 className="block-border"
@@ -40,6 +41,7 @@ export const FrontendBlockShapeComponent = <TBlockType extends BlockDefinition>(
                 strokeWidth={1.5}
                 strokeOpacity="0.12"
             />
+
             {/* Topbar */}
             <svg width={props.width} height={svgHeight} viewBox="0 0 192 170" fill="none">
                 <path
@@ -72,10 +74,12 @@ export const FrontendBlockShapeComponent = <TBlockType extends BlockDefinition>(
             <svg fill="none" x={props.width - 20} y={-30}>
                 <BlockStatus />
             </svg>
+
             {/* Offset if block has error */}
             <svg fill="none" x={props.width / 2} y={35} width={props.width - 20} viewBox="0 0 150 150">
                 <BlockInstanceName />
             </svg>
+
             <svg fill="none" x={props.width / 2} y={75}>
                 <BlockName />
             </svg>
